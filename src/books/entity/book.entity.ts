@@ -1,4 +1,5 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Borrowing } from "src/borrowing/entity/borrowing.entity";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export class Book extends BaseEntity{
@@ -16,6 +17,9 @@ export class Book extends BaseEntity{
     
     @Column()
     stock: number
+
+    @OneToMany(()=>Borrowing,(borowing)=>borowing.book)
+    borrowing:Borrowing[]
 
     @CreateDateColumn()
     createdAt: Date
