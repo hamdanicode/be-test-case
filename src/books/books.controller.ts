@@ -3,7 +3,8 @@ import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/createBookDto';
 import { UpdateBookDto } from './dto/updateBookDto';
 import { FilterBookDto } from './dto/filterBookDto';
-
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+@ApiTags('Books')
 @Controller('books')
 export class BooksController {
 
@@ -17,7 +18,15 @@ export class BooksController {
     async findOne(@Param('id') id:string){
         return this.bookService.findById(id)
     }
+
+
     @Post()
+    @ApiResponse({ status: 201, description: 'The record has been successfully created.'})
+    @ApiResponse({ status: 403, description: 'Forbidden.'})
+    @ApiBody({
+       type: CreateBookDto,
+       description: 'Json structure for user object',
+    })
     async create(@Body() createBookDto:CreateBookDto){
         return this.bookService.create(createBookDto)
     }

@@ -3,7 +3,8 @@ import { FilterMemberDto } from './dto/filterMemberDto';
 import { MembersService } from './members.service';
 import { CreateMemberDto } from './dto/createMemberDto';
 import { UpdateMemberDto } from './dto/updateMemberDto';
-
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+@ApiTags('Members')
 @Controller('members')
 export class MembersController {
     constructor(private memberService:MembersService){}
@@ -17,6 +18,12 @@ export class MembersController {
         return this.memberService.findOneById(id)
     }
     @Post()
+    @ApiResponse({ status: 201, description: 'The record has been successfully created.'})
+    @ApiResponse({ status: 403, description: 'Forbidden.'})
+    @ApiBody({
+       type: CreateMemberDto,
+       description: 'Json structure for user object',
+    })
     async create(@Body() createMemberDto:CreateMemberDto){
         return this.memberService.create(createMemberDto)
     }

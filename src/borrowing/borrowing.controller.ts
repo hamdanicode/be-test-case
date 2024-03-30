@@ -1,6 +1,8 @@
 import { Controller, Get, Param, Post } from '@nestjs/common';
 import { BorrowingService } from './borrowing.service';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Borrowing/Peminjaman')
 @Controller('borrowing')
 export class BorrowingController {
     constructor(private bprrowingService:BorrowingService){}
