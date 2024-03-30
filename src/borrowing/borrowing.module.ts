@@ -8,6 +8,7 @@ import { MembersModule } from 'src/members/members.module';
 
 @Module({
   imports:[TypeOrmModule.forFeature([Borrowing]),BooksModule,MembersModule],
+  exports:[BorrowingService],
   controllers: [BorrowingController],
   providers: [BorrowingService]
 })

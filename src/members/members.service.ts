@@ -1,7 +1,7 @@
 import { BadRequestException, ConflictException, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Member } from './entity/member.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { FilterMemberDto } from './dto/filterMemberDto';
 import { CreateMemberDto } from './dto/createMemberDto';
 import { UpdateMemberDto } from './dto/updateMemberDto';
@@ -15,6 +15,39 @@ export class MembersService {
     }
     async findOneById(id: string): Promise<Member> {
         return await this.memberRepo.findOne({ where: { id: id } })
+    }
+    async borrowedBook(id: string): Promise<Member> {
+        return await this.memberRepo.findOne({ 
+            select:{
+                borrowing:{
+                    id:true,
+                    createdAt:true,
+                    book:{
+                        code:true,
+                        title:true,
+                        author:true,
+                    }
+                }
+            },
+            where: { id: id, borrowing:{returnsAt:IsNull()}},
+            relations:['borrowing','borrowing.book'] })
+    }
+    async borrowedHistory(id: string): Promise<Member> {
+        return await this.memberRepo.findOne({ 
+            select:{
+                borrowing:{
+                    id:true,
+                    createdAt:true,
+                    returnsAt:true,
+                    book:{
+                        code:true,
+                        title:true,
+                        author:true,
+                    }
+                }
+            },
+            where: { id: id},
+            relations:['borrowing','borrowing.book'] })
     }
     async create(createMemberDto: CreateMemberDto): Promise<void> {
         const { code, name } = createMemberDto

@@ -22,4 +22,13 @@ export class Borrowing extends BaseEntity{
 
     @UpdateDateColumn()
     updatedAt: Date
+
+    async isRetunPenalty():Promise<boolean>{
+        if(this.returnsAt==null)return false;
+        const cDate = new Date(this.createdAt.getTime());
+        cDate.setDate(cDate.getDate() + 7);
+        console.log(cDate < this.returnsAt);
+        
+        return cDate < this.returnsAt
+    }
 }

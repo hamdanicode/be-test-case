@@ -4,6 +4,7 @@ import { Borrowing } from './entity/borrowing.entity';
 import { Repository } from 'typeorm';
 import { BooksService } from 'src/books/books.service';
 import { MembersService } from 'src/members/members.service';
+import { Member } from 'src/members/entity/member.entity';
 
 @Injectable()
 export class BorrowingService {
@@ -12,6 +13,21 @@ export class BorrowingService {
         private readonly bookService: BooksService,
         private readonly memberService: MembersService,
     ) { }
+
+
+    async borrowed(memberId:string):Promise<Member>{
+        const member=await this.memberService.borrowedBook(memberId);
+        return member
+    }
+
+    async borrowedHistory(memberId:string):Promise<Member>{
+        const member=await this.memberService.borrowedHistory(memberId);
+        return member
+    }
+
+    async find():Promise<Borrowing[]>{
+        return this.borrowingRepo.find({where:{},relations:['member']})
+    }   
 
     async create(memberId: string, bookId: string): Promise<void> {
         const member = await this.memberService.findOneById(memberId)
@@ -41,5 +57,8 @@ export class BorrowingService {
             throw new InternalServerErrorException(error);
         }
         
+    }
+    async findOneById(id:string):Promise<Borrowing>{
+        return await this.borrowingRepo.findOne({where:{id:id},relations:['member','book']})
     }
 }
