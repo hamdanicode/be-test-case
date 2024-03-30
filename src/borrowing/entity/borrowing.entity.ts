@@ -27,7 +27,7 @@ export class Borrowing extends BaseEntity{
         if(this.returnsAt==null)return false;
         const cDate = new Date(this.createdAt.getTime());
         cDate.setDate(cDate.getDate() + 7);
-        console.log(cDate < this.returnsAt);
+        // console.log(cDate < this.returnsAt);
         
         return cDate < this.returnsAt
     }

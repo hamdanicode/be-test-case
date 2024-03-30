@@ -12,7 +12,7 @@ export class BooksService {
     constructor(@InjectRepository(Book) private readonly bookRepo:Repository<Book>){}
 
     async find(filterBookDto:FilterBookDto):Promise<Book[]>{
-        console.log(filterBookDto);
+        // console.log(filterBookDto);
         return await this.bookRepo.find({where:filterBookDto})
     }
     async findById(id:string):Promise<Book>{

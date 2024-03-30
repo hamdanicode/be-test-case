@@ -16,6 +16,8 @@ export class BorrowingService {
 
 
     async borrowed(memberId:string):Promise<Member>{
+        // console.log("borrowing service",memberId);
+        
         const member=await this.memberService.borrowedBook(memberId);
         return member
     }

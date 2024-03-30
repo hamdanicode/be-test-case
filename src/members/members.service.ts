@@ -29,8 +29,12 @@ export class MembersService {
                     }
                 }
             },
-            where: { id: id, borrowing:{returnsAt:IsNull()}},
-            relations:['borrowing','borrowing.book'] })
+            where: { 
+                id: id, 
+                borrowing:{returnsAt:IsNull()}
+            },
+            relations:['borrowing','borrowing.book'] 
+        })
     }
     async borrowedHistory(id: string): Promise<Member> {
         return await this.memberRepo.findOne({ 
@@ -46,7 +50,7 @@ export class MembersService {
                     }
                 }
             },
-            where: { id: id},
+            where: {id:id},
             relations:['borrowing','borrowing.book'] })
     }
     async create(createMemberDto: CreateMemberDto): Promise<void> {

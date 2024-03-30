@@ -4,6 +4,7 @@ import { CreateBookDto } from './dto/createBookDto';
 import { UpdateBookDto } from './dto/updateBookDto';
 import { FilterBookDto } from './dto/filterBookDto';
 import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 @ApiTags('Books')
 @Controller('books')
 export class BooksController {
@@ -22,7 +23,8 @@ export class BooksController {
 
     @Post()
     @ApiResponse({ status: 201, description: 'The record has been successfully created.'})
-    @ApiResponse({ status: 403, description: 'Forbidden.'})
+    @ApiResponse({ status: 409 , description: 'Code {code} already used'})
+    @ApiResponse({ status: 400 , description: 'Bad Request'})
     @ApiBody({
        type: CreateBookDto,
        description: 'Json structure for user object',
@@ -30,11 +32,18 @@ export class BooksController {
     async create(@Body() createBookDto:CreateBookDto){
         return this.bookService.create(createBookDto)
     }
+
     @Put(":id")
+    @ApiResponse({ status: 200, description: 'The record has been successfully updated.'})
+    @ApiResponse({ status: 409 , description: 'Code {code} already used'})
+    @ApiResponse({ status: 400 , description: 'Bad Request'})
     async update(@Param('id') id:string,@Body() updateBookDto:UpdateBookDto){
         return this.bookService.update(id,updateBookDto)
     }
+    
     @Delete(":id")
+    @ApiResponse({ status: 200, description: 'The record has been successfully deleted.'})
+    @ApiResponse({ status: 400 , description: 'Book with ID {id} not found'})
     async delete(@Param('id') id:string){
         return this.bookService.delete(id)
     }
